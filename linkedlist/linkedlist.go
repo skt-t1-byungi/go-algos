@@ -1,51 +1,39 @@
 package linkedlist
 
-import (
-	"errors"
-)
+import "errors"
 
-var OutOfRangeError = errors.New("OutOfRangeError")
+var OutOfBoundsError = errors.New("OutOfBoundsError")
 
-type linkedList struct {
-	head *node
+type LinkedList struct {
+	head *Node
 	len  int
 }
 
-type node struct {
-	next  *node
+type Node struct {
+	next  *Node
 	value interface{}
 }
 
-func New() *linkedList {
-	return &linkedList{nil, 0}
+func New() *LinkedList {
+	return &LinkedList{nil, 0}
 }
 
-func (l *linkedList) Append(val interface{}) {
-	var idx int
-
-	if l.len == 0 {
-		idx = 0
-	} else {
-		idx = l.len
-	}
-
-	_ = l.InsertAt(idx, val)
+func (ll *LinkedList) Append(val interface{}) {
+	_ = ll.InsertAt(ll.len, val)
 }
 
-func (l *linkedList) InsertAt(idx int, val interface{}) error {
-	if idx < 0 || idx > l.len {
-		return OutOfRangeError
+func (ll *LinkedList) InsertAt(at int, val interface{}) error {
+	if at < 0 || at > ll.len {
+		return OutOfBoundsError
 	}
 
-	newNode := &node{nil, val}
-	l.len++
-
-	if l.len == 1 {
-		l.head = newNode
+	newNode := &Node{nil, val}
+	ll.len++
+	if ll.len == 1 {
+		ll.head = newNode
 		return nil
 	}
-
-	curr := l.nodeByIndex(idx - 1)
+	curr := ll.nodeAt(at - 1)
 	if curr.next != nil {
 		newNode.next = curr.next
 	}
@@ -54,50 +42,58 @@ func (l *linkedList) InsertAt(idx int, val interface{}) error {
 	return nil
 }
 
-func (l *linkedList) nodeByIndex(idx int) *node {
-	curr := l.head
-	for ; idx > 0; idx-- {
+func (ll *LinkedList) nodeAt(at int) *Node {
+	curr := ll.head
+	for ; at > 0; at-- {
 		curr = curr.next
 	}
 	return curr
 }
 
-func (l *linkedList) At(idx int) (interface{}, error) {
-	if l.isOutOfRange(idx) {
-		return nil, OutOfRangeError
+func (ll *LinkedList) At(at int) (interface{}, error) {
+	if ll.isOutOfBounds(at) {
+		return nil, OutOfBoundsError
 	}
-	return l.nodeByIndex(idx).value, nil
+	return ll.nodeAt(at).value, nil
 }
 
-func (l *linkedList) isOutOfRange(idx int) bool {
-	return idx < 0 || idx >= l.len
+func (ll *LinkedList) isOutOfBounds(i int) bool {
+	return i < 0 || i >= ll.len
 }
 
-func (l *linkedList) RemoveAt(idx int) error {
-	if l.isOutOfRange(idx) {
-		return OutOfRangeError
+func (ll *LinkedList) RemoveAt(at int) error {
+	if ll.isOutOfBounds(at) {
+		return OutOfBoundsError
 	}
 
-	curr := l.nodeByIndex(idx - 1)
-
-	var tail *node
+	curr := ll.nodeAt(at - 1)
+	var tail *Node
 	if curr.next.next != nil {
 		tail = curr.next.next
+		curr.next = nil
 	}
 	curr.next = tail
-	l.len--
+	ll.len--
 
 	return nil
 }
 
-func (l *linkedList) Size() int {
-	return l.len
+func (ll *LinkedList) Size() int {
+	return ll.len
 }
 
-func (l *linkedList) Each(iteratee func(interface{}, int)) {
-	curr := l.head
-	for i := 0; i < l.len; i++ {
+func (ll *LinkedList) Each(iteratee func(interface{}, int)) {
+	curr := ll.head
+	for i := 0; i < ll.len; i++ {
 		iteratee(curr.value, i)
 		curr = curr.next
 	}
+}
+
+func (ll *LinkedList) Slice() []interface{} {
+	r := make([]interface{}, ll.Size())
+	ll.Each(func(val interface{}, i int) {
+		r[i] = val
+	})
+	return r
 }
