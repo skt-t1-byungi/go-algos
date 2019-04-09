@@ -1,6 +1,8 @@
 package linkedlist
 
-import "errors"
+import (
+	"errors"
+)
 
 var OutOfRangeError = errors.New("OutOfRangeError")
 
