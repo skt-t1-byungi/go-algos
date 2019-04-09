@@ -28,16 +28,16 @@ func (ll *LinkedList) InsertAt(at int, val interface{}) error {
 	}
 
 	newNode := &Node{nil, val}
-	ll.len++
-	if ll.len == 1 {
+	if ll.head == nil {
 		ll.head = newNode
-		return nil
+	} else {
+		curr := ll.nodeAt(at - 1)
+		if curr.next != nil {
+			newNode.next = curr.next
+		}
+		curr.next = newNode
 	}
-	curr := ll.nodeAt(at - 1)
-	if curr.next != nil {
-		newNode.next = curr.next
-	}
-	curr.next = newNode
+	ll.len++
 
 	return nil
 }
