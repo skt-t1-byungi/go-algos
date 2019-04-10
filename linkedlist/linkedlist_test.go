@@ -44,4 +44,9 @@ func TestLinkedList(t *testing.T) {
 	if slice := ll.Slice(); !reflect.DeepEqual(slice, []interface{}{3, 5, 2}) {
 		t.Errorf("Expected [3 5 2], but %v", slice)
 	}
+
+	_ = ll.RemoveAt(0)
+	if slice := ll.Slice(); !reflect.DeepEqual(slice, []interface{}{5, 2}) {
+		t.Errorf("Expected [5 2], but %v", slice)
+	}
 }

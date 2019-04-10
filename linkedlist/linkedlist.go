@@ -66,13 +66,19 @@ func (ll *LinkedList) RemoveAt(at int) error {
 		return OutOfBoundsError
 	}
 
-	prev := ll.nodeAt(at - 1)
-	var tail *Node
-	if prev.next.next != nil {
-		tail = prev.next.next
-		prev.next = nil
+	var currRef **Node
+	if at == 0 {
+		currRef = &ll.head
+	} else {
+		currRef = &ll.nodeAt(at - 1).next
 	}
-	prev.next = tail
+
+	var tail *Node
+	if curr := *currRef; curr.next != nil {
+		tail = curr.next
+		curr.next = nil
+	}
+	*currRef = tail
 	ll.len--
 
 	return nil
