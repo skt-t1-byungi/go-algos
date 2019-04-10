@@ -27,15 +27,15 @@ func (ll *LinkedList) InsertAt(at int, val interface{}) error {
 		return OutOfBoundsError
 	}
 
-	newNode := &Node{nil, val}
-	if ll.head == nil {
-		ll.head = newNode
+	curr := &Node{nil, val}
+	if at == 0 {
+		ll.head = curr
 	} else {
-		curr := ll.nodeAt(at - 1)
-		if curr.next != nil {
-			newNode.next = curr.next
+		prev := ll.nodeAt(at - 1)
+		if prev.next != nil {
+			curr.next = prev.next
 		}
-		curr.next = newNode
+		prev.next = curr
 	}
 	ll.len++
 
@@ -66,13 +66,13 @@ func (ll *LinkedList) RemoveAt(at int) error {
 		return OutOfBoundsError
 	}
 
-	curr := ll.nodeAt(at - 1)
+	prev := ll.nodeAt(at - 1)
 	var tail *Node
-	if curr.next.next != nil {
-		tail = curr.next.next
-		curr.next = nil
+	if prev.next.next != nil {
+		tail = prev.next.next
+		prev.next = nil
 	}
-	curr.next = tail
+	prev.next = tail
 	ll.len--
 
 	return nil
