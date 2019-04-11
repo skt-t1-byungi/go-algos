@@ -14,7 +14,7 @@ func (q *Queue) Enqueue(val interface{}) {
 	q.list.Append(val)
 }
 
-func (q Queue) Dequeue() (interface{}, error) {
+func (q *Queue) Dequeue() (interface{}, error) {
 	val, err := q.list.At(0)
 	if err != nil {
 		return nil, err
