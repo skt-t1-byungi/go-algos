@@ -34,6 +34,10 @@ func (s *Stack) Peek() (interface{}, error) {
 	return val, nil
 }
 
-func (s *Stack) isEmpty() bool {
+func (s *Stack) IsEmpty() bool {
 	return s.list.Size() == 0
+}
+
+func (s Stack) Size() int {
+	return s.list.Size()
 }
