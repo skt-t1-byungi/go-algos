@@ -53,8 +53,7 @@ func (ht *HashTable) pos(key string) int {
 }
 
 func (ht *HashTable) Get(key string) (interface{}, bool) {
-	pos := ht.pos(key)
-	list := ht.bucket[pos]
+	list := ht.bucket[ht.pos(key)]
 	if list == nil {
 		return nil, false
 	}
@@ -63,20 +62,22 @@ func (ht *HashTable) Get(key string) (interface{}, bool) {
 }
 
 func (ht *HashTable) Delete(key string) bool {
-	pos := ht.pos(key)
-	list := ht.bucket[pos]
+	list := ht.bucket[ht.pos(key)]
 	if list == nil {
 		return false
 	}
+
 	_, idx := find(list, key)
 	if idx == -1 {
 		return false
 	}
+
 	if ht.size == len(ht.bucket)-2 {
 		ht.resize()
 	}
 	list.RemoveAt(idx)
 	ht.size--
+
 	return true
 }
 
