@@ -21,11 +21,11 @@ func (ht *HashTable) resize() {
 	ht.bucket = make([]*linkedlist.LinkedList, len(old)*2)
 	ht.size = 0
 	each(old, func(val interface{}, key string) {
-		ht.Put(key, val)
+		ht.Set(key, val)
 	})
 }
 
-func (ht *HashTable) Put(key string, val interface{}) {
+func (ht *HashTable) Set(key string, val interface{}) {
 	if ht.size == len(ht.bucket)+2 {
 		ht.resize()
 	}
