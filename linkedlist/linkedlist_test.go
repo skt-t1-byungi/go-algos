@@ -50,3 +50,19 @@ func TestLinkedList(t *testing.T) {
 		t.Errorf("Expected [5 2], but %v", slice)
 	}
 }
+
+func TestLinkedList_Find(t *testing.T) {
+	type Data struct{ n int }
+	ll := New()
+	ll.Append(Data{8})
+	ll.Append(Data{3})
+	ll.Append(Data{10})
+
+	found, _ := ll.Find(func(val interface{}, i int) bool {
+		return val.(Data).n%2 == 1
+	})
+
+	if v := found.(Data); v.n != 3 {
+		t.Errorf("Expected 3, but %v", v.n)
+	}
+}

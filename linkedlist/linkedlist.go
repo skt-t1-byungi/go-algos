@@ -35,7 +35,7 @@ func (ll *LinkedList) InsertAt(at int, val interface{}) error {
 	}
 
 	curr := &Node{nil, val}
-	if next := *ptr; next != nil{
+	if next := *ptr; next != nil {
 		curr.next = next
 	}
 	*ptr = curr
@@ -104,4 +104,15 @@ func (ll *LinkedList) Slice() []interface{} {
 		r[i] = val
 	})
 	return r
+}
+
+func (ll *LinkedList) Find(finder func(val interface{}, i int) bool) (interface{}, error) {
+	curr := ll.head
+	for i := 0; i < ll.len; i++ {
+		if finder(curr.value, i) {
+			return curr.value, nil
+		}
+		curr = curr.next
+	}
+	return nil, errors.New("NotFound")
 }
