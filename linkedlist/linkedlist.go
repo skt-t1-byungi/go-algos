@@ -106,13 +106,13 @@ func (ll *LinkedList) Slice() []interface{} {
 	return r
 }
 
-func (ll *LinkedList) Find(finder func(val interface{}, i int) bool) (interface{}, error) {
+func (ll *LinkedList) Find(finder func(val interface{}, i int) bool) (interface{}, int) {
 	curr := ll.head
 	for i := 0; i < ll.len; i++ {
 		if finder(curr.value, i) {
-			return curr.value, nil
+			return curr.value, i
 		}
 		curr = curr.next
 	}
-	return nil, errors.New("NotFound")
+	return nil, -1
 }
