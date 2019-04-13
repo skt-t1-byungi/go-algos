@@ -14,7 +14,6 @@ func TestLinkedList(t *testing.T) {
 	ll.Append(3)
 	ll.Append(1)
 	ll.Append(2)
-
 	if v, _ := ll.At(0); v.(int) != 3 {
 		t.Errorf("Expected 3, but %d", v)
 	}
@@ -31,7 +30,7 @@ func TestLinkedList(t *testing.T) {
 		t.Errorf("Expected [3 1 2], but %v", slice)
 	}
 
-	_ = ll.RemoveAt(1)
+	ll.RemoveAt(1)
 	if ll.Size() != 2 {
 		t.Errorf("Expected 2, but %d", ll.Size())
 	}
@@ -40,12 +39,12 @@ func TestLinkedList(t *testing.T) {
 		t.Errorf("Expected [3 2], but %v", slice)
 	}
 
-	_ = ll.InsertAt(1, 5)
+	ll.InsertAt(1, 5)
 	if slice := ll.Slice(); !reflect.DeepEqual(slice, []interface{}{3, 5, 2}) {
 		t.Errorf("Expected [3 5 2], but %v", slice)
 	}
 
-	_ = ll.RemoveAt(0)
+	ll.RemoveAt(0)
 	if slice := ll.Slice(); !reflect.DeepEqual(slice, []interface{}{5, 2}) {
 		t.Errorf("Expected [5 2], but %v", slice)
 	}

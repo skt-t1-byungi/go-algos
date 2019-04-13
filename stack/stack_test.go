@@ -23,8 +23,8 @@ func TestStack(t *testing.T) {
 	if v, _ := stack.Pop(); v.(int) != 10 {
 		t.Errorf("Expected 10, but %d", v)
 	}
-	if _, err := stack.Pop(); err == nil {
-		t.Error("Expected OutOfBoundsError, but nil")
+	if _, ok := stack.Pop(); !ok {
+		t.Errorf("Expected false, but %t", ok)
 	}
 	if !stack.IsEmpty() {
 		t.Errorf("Expected true, but %t", stack.IsEmpty())

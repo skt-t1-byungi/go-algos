@@ -1,9 +1,5 @@
 package linkedlist
 
-import "errors"
-
-var OutOfBoundsError = errors.New("OutOfBoundsError")
-
 type LinkedList struct {
 	head *Node
 	len  int
@@ -19,12 +15,12 @@ func New() *LinkedList {
 }
 
 func (ll *LinkedList) Append(val interface{}) {
-	_ = ll.InsertAt(ll.len, val)
+	ll.InsertAt(ll.len, val)
 }
 
-func (ll *LinkedList) InsertAt(at int, val interface{}) error {
+func (ll *LinkedList) InsertAt(at int, val interface{}) bool {
 	if at < 0 || at > ll.len {
-		return OutOfBoundsError
+		return false
 	}
 
 	var ptr **Node
@@ -41,7 +37,7 @@ func (ll *LinkedList) InsertAt(at int, val interface{}) error {
 	*ptr = curr
 	ll.len++
 
-	return nil
+	return true
 }
 
 func (ll *LinkedList) nodeAt(at int) *Node {
@@ -52,20 +48,20 @@ func (ll *LinkedList) nodeAt(at int) *Node {
 	return curr
 }
 
-func (ll *LinkedList) At(at int) (interface{}, error) {
+func (ll *LinkedList) At(at int) (interface{}, bool) {
 	if ll.isOutOfBounds(at) {
-		return nil, OutOfBoundsError
+		return nil, false
 	}
-	return ll.nodeAt(at).value, nil
+	return ll.nodeAt(at).value, true
 }
 
 func (ll *LinkedList) isOutOfBounds(i int) bool {
 	return i < 0 || i >= ll.len
 }
 
-func (ll *LinkedList) RemoveAt(at int) error {
+func (ll *LinkedList) RemoveAt(at int) bool {
 	if ll.isOutOfBounds(at) {
-		return OutOfBoundsError
+		return false
 	}
 
 	var ptr **Node
@@ -83,7 +79,7 @@ func (ll *LinkedList) RemoveAt(at int) error {
 	*ptr = tail
 	ll.len--
 
-	return nil
+	return true
 }
 
 func (ll *LinkedList) Size() int {

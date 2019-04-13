@@ -27,7 +27,7 @@ func TestQueue(t *testing.T) {
 	if v, _ := queue.Dequeue(); v != 5 {
 		t.Errorf("Expected 4, but %d", v)
 	}
-	if _, err := queue.Dequeue(); err == nil {
-		t.Error("Expected OutOfBoundsError, but nil")
+	if _, ok := queue.Dequeue(); ok {
+		t.Errorf("Expected false, but %t", ok)
 	}
 }

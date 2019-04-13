@@ -14,24 +14,24 @@ func (s *Stack) Push(val interface{}) {
 	s.list.Append(val)
 }
 
-func (s *Stack) Pop() (interface{}, error) {
+func (s *Stack) Pop() (interface{}, bool) {
 	at := s.list.Size() - 1
-	val, err := s.list.At(at)
-	if err != nil {
-		return nil, err
+	val, ok := s.list.At(at)
+	if !ok {
+		return nil, false
 	}
-	if err := s.list.RemoveAt(at); err != nil {
-		return nil, err
+	if ok := s.list.RemoveAt(at); !ok {
+		return nil, false
 	}
-	return val, nil
+	return val, true
 }
 
-func (s *Stack) Peek() (interface{}, error) {
-	val, err := s.list.At(s.list.Size() - 1)
-	if err != nil {
-		return nil, err
+func (s *Stack) Peek() (interface{}, bool) {
+	val, ok := s.list.At(s.list.Size() - 1)
+	if !ok {
+		return nil, false
 	}
-	return val, nil
+	return val, true
 }
 
 func (s *Stack) IsEmpty() bool {
