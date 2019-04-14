@@ -86,7 +86,7 @@ func (ll *LinkedList) Size() int {
 	return ll.len
 }
 
-func (ll *LinkedList) Each(iteratee func(interface{}, int)) {
+func (ll *LinkedList) Each(iteratee func(val interface{}, i int)) {
 	curr := ll.head
 	for i := 0; i < ll.len; i++ {
 		iteratee(curr.value, i)
