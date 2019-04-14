@@ -35,9 +35,10 @@ func (ht *HashTable) Set(key string, val interface{}) {
 
 	if _, idx := search(list, key); idx > -1 {
 		list.RemoveAt(idx)
+	} else {
+		ht.size++
 	}
 
-	ht.size++
 	list.Append(&hashTableItem{key, val})
 
 	if ht.size == len(ht.bucket)+2 {
