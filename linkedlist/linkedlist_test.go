@@ -143,6 +143,16 @@ func TestLinkedList_Find(t *testing.T) {
 	assert.Equal(t, 4, index)
 }
 
+func TestLinkedList_SetAt(t *testing.T) {
+	ll := New()
+	ll.Append(3)
+	ll.Append(2)
+	ll.SetAt(1, 5)
+	assert.Equal(t, []interface{}{3, 5}, ll.Slice())
+	ll.SetAt(4, 1)
+	assert.Equal(t, []interface{}{3, 5, nil, nil, 1}, ll.Slice())
+}
+
 func TestLinkedList_Len(t *testing.T) {
 	ll := New()
 	assert.Equal(t, 0, ll.Len())

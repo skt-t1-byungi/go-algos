@@ -188,6 +188,17 @@ func (ll *LinkedList) RemoveAt(idx int) bool {
 	return true
 }
 
+func (ll *LinkedList) SetAt(idx int, val interface{}) {
+	idx = withNegativeIndex(ll.len, idx)
+	if idx > ll.len {
+		ll.InsertAt(idx, val)
+		return
+	}
+
+	node := ll.nodeAt(idx)
+	node.value = val
+}
+
 func (ll *LinkedList) Find(finder func(val interface{}, i int) bool) (interface{}, int) {
 	curr := ll.head
 	for i := 0; i < ll.len; i++ {
@@ -197,4 +208,14 @@ func (ll *LinkedList) Find(finder func(val interface{}, i int) bool) (interface{
 		curr = curr.next
 	}
 	return nil, -1
+}
+
+func (ll *LinkedList) isEmpty() bool {
+	return ll.len == 0
+}
+
+func (ll *LinkedList) Empty() {
+	ll.len = 0
+	ll.head = nil
+	ll.tail = nil
 }
