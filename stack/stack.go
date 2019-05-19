@@ -10,34 +10,27 @@ func New() *Stack {
 	return &Stack{list: linkedlist.New()}
 }
 
-func (s *Stack) Push(val interface{}) {
-	s.list.Append(val)
+func (s *Stack) Push(values ...interface{}) {
+	s.list.Append(values...)
 }
 
-func (s *Stack) Pop() (interface{}, bool) {
-	at := s.list.Size() - 1
-	val, ok := s.list.At(at)
-	if !ok {
-		return nil, false
+func (s *Stack) Pop() interface{} {
+	if s.list.Len() == 0 {
+		return nil
 	}
-	if ok := s.list.RemoveAt(at); !ok {
-		return nil, false
-	}
-	return val, true
+	val := s.list.Last()
+	s.list.RemoveLast()
+	return val
 }
 
-func (s *Stack) Peek() (interface{}, bool) {
-	val, ok := s.list.At(s.list.Size() - 1)
-	if !ok {
-		return nil, false
-	}
-	return val, true
+func (s *Stack) Peek() interface{} {
+	return s.list.Last()
 }
 
 func (s *Stack) IsEmpty() bool {
-	return s.list.Size() == 0
+	return s.list.IsEmpty()
 }
 
-func (s Stack) Size() int {
-	return s.list.Size()
+func (s Stack) Len() int {
+	return s.list.Len()
 }
