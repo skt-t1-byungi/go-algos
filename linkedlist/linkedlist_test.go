@@ -9,9 +9,7 @@ import (
 
 func ExampleLinkedList_Append() {
 	ll := New()
-	ll.Append(3)
-	ll.Append(2)
-	ll.Append(5)
+	ll.Append(3, 2, 5)
 	printList(ll)
 	// output:
 	// 3,nil,2
@@ -33,9 +31,7 @@ func ExampleLinkedList_Prepend() {
 
 func TestLinkedList_At(t *testing.T) {
 	ll := New()
-	ll.Append(3)
-	ll.Append(2)
-	ll.Append(5)
+	ll.Prepend(3, 2, 5)
 	assert.Equal(t, 3, ll.At(0).(int))
 	assert.Equal(t, 2, ll.At(1).(int))
 	assert.Equal(t, 5, ll.At(2).(int))
@@ -71,9 +67,7 @@ func BenchmarkLinkedList_At(b *testing.B) {
 
 func TestLinkedList_Slice(t *testing.T) {
 	ll := New()
-	for _, n := range []int{3, 1, 2} {
-		ll.Append(n)
-	}
+	ll.Prepend(3, 1, 2)
 	assert.Equal(t, []interface{}{3, 1, 2}, ll.Slice())
 }
 

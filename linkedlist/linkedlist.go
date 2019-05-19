@@ -23,41 +23,40 @@ func (ll *LinkedList) each(iteratee func(node *Node)) {
 }
 
 func (ll LinkedList) Slice() []interface{} {
-	s := make([]interface{}, ll.len)
+	slice := make([]interface{}, ll.len)
 	i := -1
 	ll.each(func(node *Node) {
 		i++
-		s[i] = node.value
+		slice[i] = node.value
 	})
-	return s
+	return slice
 }
 
 func (ll *LinkedList) Len() int {
 	return ll.len
 }
 
-func (ll *LinkedList) Append(val interface{}) {
-	newNode := &Node{nil, nil, val}
-	var ptr **Node
+func (ll *LinkedList) Append(values ...interface{}) {
+	head, last := createNodes(values)
 	if ll.len == 0 {
-		ptr = &ll.head
+		ll.head = head
 	} else {
-		ptr = &ll.tail.next
-		newNode.prev = ll.tail
+		ll.tail.next = head
+		head.prev = ll.tail
 	}
-	*ptr = newNode
-	ll.tail = newNode
-	ll.len++
+	ll.tail = last
+	ll.len += len(values)
 }
 
-func (ll *LinkedList) Prepend(val interface{}) {
+func (ll *LinkedList) Prepend(values ...interface{}) {
 	if ll.len == 0 {
-		ll.Append(val)
+		ll.Append(values...)
 	} else {
-		prevHead := ll.head
-		ll.head = &Node{nil, prevHead, val}
-		prevHead.prev = ll.head
-		ll.len++
+		head, last := createNodes(values)
+		last.next = ll.head
+		ll.head.prev = last
+		ll.head = head
+		ll.len += len(values)
 	}
 }
 
@@ -97,42 +96,31 @@ func (ll *LinkedList) nodeAt(idx int) *Node {
 	return node
 }
 
-func (ll *LinkedList) InsertAt(idx int, val interface{}) {
+func (ll *LinkedList) InsertAt(idx int, values ...interface{}) {
 	idx = withNegativeIndex(ll.len, idx)
 
 	if idx == 0 {
-		ll.Prepend(val)
-		return
-	} else if idx == ll.len {
-		ll.Append(val)
+		ll.Prepend(values...)
 		return
 	}
-
+	if idx == ll.len {
+		ll.Append(values...)
+		return
+	}
 	if idx > ll.len {
-		for i := ll.len; i < idx; i++ {
-			ll.Append(nil)
-		}
-		ll.Append(val)
+		ll.Append(make([]interface{}, idx-ll.len)...)
+		ll.Append(values...)
 		return
 	}
 
+	head, last := createNodes(values)
 	oldNode := ll.nodeAt(idx)
 	prevNode := oldNode.prev
-	newNode := &Node{prevNode, oldNode, val}
-	oldNode.prev = newNode
-	prevNode.next = newNode
-	ll.len++
-}
-
-func withNegativeIndex(len, idx int) int {
-	if idx < 0 {
-		if len == 0 {
-			idx = 0
-		} else {
-			idx = len + idx%len
-		}
-	}
-	return idx
+	head.prev = prevNode
+	last.next = oldNode
+	oldNode.prev = last
+	prevNode.next = head
+	ll.len += len(values)
 }
 
 func (ll *LinkedList) RemoveFirst() bool {
@@ -210,7 +198,7 @@ func (ll *LinkedList) Find(finder func(val interface{}, i int) bool) (interface{
 	return nil, -1
 }
 
-func (ll *LinkedList) isEmpty() bool {
+func (ll *LinkedList) IsEmpty() bool {
 	return ll.len == 0
 }
 
@@ -218,4 +206,31 @@ func (ll *LinkedList) Empty() {
 	ll.len = 0
 	ll.head = nil
 	ll.tail = nil
+}
+
+func createNodes(values []interface{}) (*Node, *Node) {
+	var head *Node
+	var last *Node
+	for _, value := range values {
+		curr := &Node{nil, nil, value}
+		if last == nil {
+			head = curr
+		} else {
+			curr.prev = last
+			last.next = curr
+		}
+		last = curr
+	}
+	return head, last
+}
+
+func withNegativeIndex(len, idx int) int {
+	if idx < 0 {
+		if len == 0 {
+			idx = 0
+		} else {
+			idx = len + idx%len
+		}
+	}
+	return idx
 }
