@@ -12,28 +12,27 @@ func New() *Queue {
 	return &Queue{linkedlist.New()}
 }
 
-func (q *Queue) Enqueue(val interface{}) {
-	q.list.Append(val)
+func (q *Queue) Enqueue(values ...interface{}) {
+	q.list.Append(values...)
 }
 
-func (q *Queue) Dequeue() (interface{}, bool) {
-	val, ok := q.list.At(0)
-	if !ok {
-		return nil, false
+func (q *Queue) Dequeue() interface{} {
+	if q.list.Len() == 0 {
+		return nil
 	}
-
-	q.list.RemoveAt(0)
-	return val, true
+	val := q.list.First()
+	q.list.RemoveFirst()
+	return val
 }
 
-func (q *Queue) Peak() (interface{}, bool) {
-	return q.list.At(0)
+func (q *Queue) Peak() interface{} {
+	return q.list.First()
 }
 
 func (q *Queue) IsEmpty() bool {
-	return q.list.Size() == 0
+	return q.list.IsEmpty()
 }
 
-func (q *Queue) Size() int {
-	return q.list.Size()
+func (q *Queue) Len() int {
+	return q.list.Len()
 }

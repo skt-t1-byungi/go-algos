@@ -1,33 +1,23 @@
 package queue
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestQueue(t *testing.T) {
 	queue := New()
-	if !queue.IsEmpty() {
-		t.Errorf("Expected true, but %t", queue.IsEmpty())
-	}
+	assert.True(t, queue.IsEmpty())
 
-	queue.Enqueue(4)
-	queue.Enqueue(2)
-	queue.Enqueue(5)
-	if queue.Size() != 3 {
-		t.Errorf("Expected 3, but %d", queue.Size())
-	}
-	if v, _ := queue.Peak(); v != 4 {
-		t.Errorf("Expected 4, but %d", v)
-	}
+	queue.Enqueue(4, 2, 5)
 
-	if v, _ := queue.Dequeue(); v != 4 {
-		t.Errorf("Expected 4, but %d", v)
-	}
-	if v, _ := queue.Dequeue(); v != 2 {
-		t.Errorf("Expected 4, but %d", v)
-	}
-	if v, _ := queue.Dequeue(); v != 5 {
-		t.Errorf("Expected 4, but %d", v)
-	}
-	if _, ok := queue.Dequeue(); ok {
-		t.Errorf("Expected false, but %t", ok)
-	}
+	assert.Equal(t, 3, queue.Len())
+	assert.Equal(t, 4, queue.Peak())
+	assert.Equal(t, 4, queue.Dequeue())
+	assert.Equal(t, 2, queue.Len())
+	assert.Equal(t, 2, queue.Dequeue())
+	assert.Equal(t, 1, queue.Len())
+	assert.Equal(t, 5, queue.Dequeue())
+	assert.True(t, queue.IsEmpty())
+	assert.Nil(t, queue.Dequeue())
 }
