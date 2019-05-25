@@ -26,7 +26,7 @@ func (ht *HashTable) resize() {
 }
 
 func (ht *HashTable) Set(key string, val interface{}) {
-	pos := ht.listPosition(key)
+	pos := ht.pos(key)
 	list := ht.bucket[pos]
 	if list == nil {
 		list = linkedlist.New()
@@ -46,7 +46,7 @@ func (ht *HashTable) Set(key string, val interface{}) {
 	}
 }
 
-func (ht *HashTable) listPosition(key string) int {
+func (ht *HashTable) pos(key string) int {
 	hash := 0
 	for _, char := range key {
 		hash = hash<<4 + int(char)
@@ -55,7 +55,7 @@ func (ht *HashTable) listPosition(key string) int {
 }
 
 func (ht *HashTable) Get(key string) (interface{}, bool) {
-	list := ht.bucket[ht.listPosition(key)]
+	list := ht.bucket[ht.pos(key)]
 	if list == nil {
 		return nil, false
 	}
@@ -64,7 +64,7 @@ func (ht *HashTable) Get(key string) (interface{}, bool) {
 }
 
 func (ht *HashTable) Delete(key string) bool {
-	list := ht.bucket[ht.listPosition(key)]
+	list := ht.bucket[ht.pos(key)]
 	if list == nil {
 		return false
 	}
@@ -127,7 +127,7 @@ func search(list *linkedlist.LinkedList, key string) (interface{}, int) {
 	}
 }
 
-func eachItem(bucket []*linkedlist.LinkedList, iteratee func(val interface{}, i string)) {
+func eachItem(bucket []*linkedlist.LinkedList, iteratee func(val interface{}, key string)) {
 	for _, list := range bucket {
 		if list != nil {
 			list.Each(func(val interface{}, i int) {

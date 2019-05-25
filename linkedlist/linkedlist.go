@@ -22,6 +22,14 @@ func (ll *LinkedList) each(iteratee func(node *Node)) {
 	}
 }
 
+func (ll *LinkedList) Each(iteratee func(val interface{}, i int)) {
+	i := -1
+	ll.each(func(node *Node) {
+		i++
+		iteratee(node.value, i)
+	})
+}
+
 func (ll LinkedList) Slice() []interface{} {
 	slice := make([]interface{}, ll.len)
 	i := -1
