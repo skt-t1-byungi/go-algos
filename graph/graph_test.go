@@ -26,9 +26,6 @@ func ExampleGraph() {
 func TestGraph_Contains(t *testing.T) {
 	gr := New()
 	node := gr.CreateNode(3)
-
 	assert.True(t, gr.Contains(node))
-
-	other := Node(3)
-	assert.False(t, gr.Contains(&other))
+	assert.False(t, gr.Contains(&Node{3}))
 }

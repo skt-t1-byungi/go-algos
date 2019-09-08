@@ -5,25 +5,23 @@ import (
 )
 
 func BFS(graph *Graph, start *Node) []interface{} {
-	var res []interface{}
+	var ret []interface{}
 	visited := map[*Node]bool{}
 	q := queue.New()
 	q.Enqueue(start)
 
 	for !q.IsEmpty() {
 		curr := q.Dequeue().(*Node)
-
 		if visited[curr] {
 			continue
 		}
 
 		visited[curr] = true
-		res = append(res, *curr)
+		ret = append(ret, curr.val)
 
 		for _, edge := range (*graph)[curr] {
 			q.Enqueue(edge)
 		}
 	}
-
-	return res
+	return ret
 }
