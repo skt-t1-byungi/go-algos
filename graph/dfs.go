@@ -4,8 +4,7 @@ import (
 	"github.com/skt-t1-byungi/go-algos/stack"
 )
 
-func DFS(graph *Graph, start *Node) []interface{} {
-	var ret []interface{}
+func DFS(graph *Graph, start *Node) (ret []interface{}) {
 	visited := map[*Node]bool{}
 	st := stack.New()
 	st.Push(start)
@@ -24,5 +23,5 @@ func DFS(graph *Graph, start *Node) []interface{} {
 			st.Push(edge)
 		}
 	}
-	return ret
+	return
 }
