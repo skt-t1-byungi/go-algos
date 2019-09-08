@@ -19,12 +19,12 @@ func (gr *Graph) AddEdge(a, b *Node) bool {
 		return false
 	}
 
-	if !gr.linkNode(a, b) {
+	if !gr.link(a, b) {
 		return false
 	}
 
-	if !gr.linkNode(b, a) {
-		gr.unlinkNode(a, b)
+	if !gr.link(b, a) {
+		gr.unlink(a, b)
 		return false
 	}
 
@@ -38,7 +38,7 @@ func (gr *Graph) Contains(node *Node) bool {
 	return true
 }
 
-func (gr *Graph) linkNode(curr, other *Node) bool {
+func (gr *Graph) link(curr, other *Node) bool {
 	edges := (*gr)[curr]
 
 	for _, edge := range edges {
@@ -52,7 +52,7 @@ func (gr *Graph) linkNode(curr, other *Node) bool {
 	return true
 }
 
-func (gr *Graph) unlinkNode(curr, other *Node) {
+func (gr *Graph) unlink(curr, other *Node) {
 	edges := (*gr)[curr]
 
 	for idx, edge := range edges {
