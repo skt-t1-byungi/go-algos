@@ -31,10 +31,8 @@ func (gr *Graph) AddEdge(a, b *Node) bool {
 }
 
 func (gr *Graph) Contains(node *Node) bool {
-	if _, ok := (*gr)[node]; !ok {
-		return false
-	}
-	return true
+	_, ok := (*gr)[node]
+	return ok
 }
 
 func (gr *Graph) link(curr, other *Node) bool {
