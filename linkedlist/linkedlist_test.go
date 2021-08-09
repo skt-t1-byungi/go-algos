@@ -2,9 +2,10 @@ package linkedlist
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func ExampleLinkedList_Append() {

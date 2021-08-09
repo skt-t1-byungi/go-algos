@@ -1,8 +1,9 @@
 package hashtable
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHashTable(t *testing.T) {
